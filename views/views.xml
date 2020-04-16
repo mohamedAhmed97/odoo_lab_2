@@ -1,0 +1,139 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="iti_session_1.list">
+      <field name="name">iti_session_1 list</field>
+      <field name="model">iti.session1.calls</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="start_time"/>
+          <field name="stop_time"/>
+          <field name="station"/>
+          <field name="source"/>
+          <field name="destination"/>
+          <field name="duration" widget="float_time"/>
+        </tree>
+      </field>
+    </record>
+
+    <!--    Form View -->
+    <record model="ir.ui.view" id="iti_session_1.form">
+      <field name="name">iti_session_1 form</field>
+      <field name="model">iti.session1.calls</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+             <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+          </header>
+          <sheet>
+            <group>
+              <h2>
+                <field name="name"/>
+              </h2>
+              <field name="start_time"/>
+              <field name="stop_time"/>
+              <field name="station"/>
+              <field name="source"/>
+              <field name="destination"/>
+              <field name="duration" widget="float_time"/>
+              <field name="tags" widget="many2many_tags"/>
+
+            </group>
+          </sheet>
+
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="iti_session_1.calendar">
+      <field name="name">iti_session_1 list</field>
+      <field name="model">iti.session1.calls</field>
+      <field name="arch" type="xml">
+        <calendar date_start='start_time' date_stop="stop_time">
+
+          <field name="destination"/>
+          <field name="duration" widget="float_time"/>
+
+        </calendar>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="iti_session_1.graph">
+      <field name="name">iti_session_1 list</field>
+      <field name="model">iti.session1.calls</field>
+      <field name="arch" type="xml">
+        <graph>
+
+          <field name="start_time"/>
+          <field name="duration" type="measure"/>
+
+        </graph>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="iti_session_1.kanban">
+      <field name="name">iti_session_1 kanban</field>
+      <field name="model">iti.session1.calls</field>
+      <field name="arch" type="xml">
+        <kanban>
+          <field name="name"/>
+          <field name="start_time"/>
+          <field name="stop_time"/>
+          <templates>
+            <t t-name="kanban-box">
+
+              <div class="oe_kanban_global_click">
+
+               <strong><field name="name"/></strong>
+                <field name="start_time"/>
+                <field name="stop_time"/>
+
+              </div>
+            </t>
+          </templates>
+
+        </kanban>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="iti_session_1.search">
+      <field name="name">iti_session_1 search</field>
+      <field name="model">iti.session1.calls</field>
+      <field name="arch" type="xml">
+        <search>
+
+          <field name="station"/>
+          <field name="name"/>
+          <field name="source"/>
+          <field name="destination"/>
+          <filter name="current_month" string="Start Time" date="start_time"/>
+          <filter name="invoiced" string="Invoiced" domain="[('state', '=', 'invoiced')]"/>
+          <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+          <group string="Group By">
+            <filter name="group_by_state" string="Status" context="{'group_by': 'state'}"/>
+          </group>
+
+        </search>
+      </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="iti_session_1.action_window">
+      <field name="name">iti_session_1 window</field>
+      <field name="res_model">iti.session1.calls</field>
+      <field name="view_mode">tree,form,kanban,calendar,graph</field>
+    </record>
+
+
+    <!-- Top menu item -->
+    <menuitem name="Call Center" id="iti_session_1.menu_root"/>
+    <!-- menu categories -->
+
+    <menuitem name="Calls" id="iti_session_1.menu_1" parent="iti_session_1.menu_root"/>
+    <!-- actions -->
+    <menuitem name="List" id="iti_session_1.menu_1_list" parent="iti_session_1.menu_1"
+              action="iti_session_1.action_window"/>
+  </data>
+</odoo>
